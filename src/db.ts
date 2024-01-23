@@ -8,6 +8,11 @@ const {
   DB_PORT: port = '3000',
 } = process.env;
 
+if (!dbstring || !dbPassword) {
+  console.error('Missing required environment variables.');
+  process.exit(1);
+}
+
 const connectionData = {
   host: 'localhost',
   port: Number(port),
