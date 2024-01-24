@@ -1,25 +1,54 @@
 import { pool } from './db';
 
+type UrlData = {
+  id: number;
+  original_url: string;
+  shortened_url: string;
+  created_at: Date;
+  times_used: number;
+};
+
 const resolvers = {
   Query: {
     getAllUrls: async () => {
       try {
         const urls = await pool.query('SELECT * FROM url_list');
-        return urls.rows;
+        console.log(urls.rows);
+        return urls.rows.map((url: UrlData) => ({
+          id: url.id,
+          originalUrl: url.original_url,
+          shortenedUrl: url.shortened_url,
+          createdAt: url.created_at.toISOString(),
+          timesUsed: url.times_used,
+        }));
       } catch (err) {
-        console.error('Error fetchcing All URLs', err);
+        console.error('Error fetching All URLs', err);
         throw new Error('Unable to fetch all URLs');
       }
     },
-    getUrlById: async (id: number) => {
+
+    getUrlByUrl: async (_: any, { url }: { url: string }) => {
       try {
-        const urls = await pool.query('SELECT * FROM url_list WHERE id = $1', [
-          id,
-        ]);
-        return urls.rows;
+        const urls = await pool.query(
+          'SELECT * FROM url_list WHERE original_url = $1',
+          [url]
+        );
+
+        if (urls.rows.length === 1) {
+          const url: UrlData = urls.rows[0];
+          return {
+            id: url.id,
+            originalUrl: url.original_url,
+            shortenedUrl: url.shortened_url,
+            createdAt: url.created_at.toISOString(),
+            timesUsed: url.times_used,
+          };
+        } else {
+          throw new Error('URL not found');
+        }
       } catch (err) {
-        console.error('Error fetching URL by ID', err);
-        throw new Error('Unable to fetch URL by ID');
+        console.error('Error fetching URL by Url', err);
+        throw new Error('Unable to fetch URL by Url');
       }
     },
   },
