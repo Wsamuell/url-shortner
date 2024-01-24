@@ -1,28 +1,7 @@
-import { ApolloServer, gql } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-express';
 import express, { Application } from 'express';
-
-// definitely need to move this logic to a different file later
-
-const typeDefs = gql`
-  type Query {
-    url: String
-  }
-
-  type Mutation {
-    shortUrl(inputUrl: String!): String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    url: () => 'http/www.google.com',
-  },
-  Mutation: {
-    shortUrl: ($url: String) => {
-      return $url;
-    },
-  },
-};
+import typeDefs from './typeDef';
+import resolvers from './resolver';
 
 // as any is a work around because applyiddleware doesnt take type  Application for some reason
 const server = new ApolloServer({

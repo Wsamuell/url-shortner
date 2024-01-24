@@ -1,26 +1,22 @@
-import pgPromise, { IMain, IDatabase } from 'pg-promise';
+import { Pool } from 'pg';
 
-const pgp: IMain = pgPromise();
+// const {
+//   DB: dbstring = '',
+//   DB_PASSWORD: dbPassword = '',
+//   DB_PORT: port = '3000',
+// } = process.env;
 
-const {
-  DB: dbstring = '',
-  DB_PASSWORD: dbPassword = '',
-  DB_PORT: port = '3000',
-} = process.env;
+// if (!dbstring || !dbPassword) {
+//   console.error('Missing required environment variables.');
+//   process.exit(1);
+// }
 
-if (!dbstring || !dbPassword) {
-  console.error('Missing required environment variables.');
-  process.exit(1);
-}
+const pool = new Pool({
+  host: process.env.DB_HOST || 'localhost',
+  port: Number(process.env.DB_PORT) || 5432,
+  database: process.env.DB_NAME || 'url_shortner_db',
+  user: process.env.DB_USER || 'samuelwemimo',
+  password: process.env.DB_PASSWORD || '',
+});
 
-const connectionData = {
-  host: 'localhost',
-  port: Number(port),
-  database: dbstring,
-  user: 'user-name',
-  password: dbPassword,
-};
-
-const db: IDatabase<any> = pgp(connectionData);
-
-export { db, pgp };
+export { pool };
