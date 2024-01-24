@@ -1,7 +1,16 @@
 import { pool } from './db';
 import { Pool, QueryResult } from 'pg';
 
-type UrlData = QueryResult['rows'][0];
+// im not sure which one is better but not using yhe QueryResult type is proving to be more helpful locally
+
+// type UrlData = QueryResult['rows'][0];
+type UrlData = {
+  id: number;
+  original_url: string;
+  shortened_url: string;
+  created_at: Date;
+  times_used: string;
+};
 
 const resolvers = {
   Query: {
@@ -53,7 +62,25 @@ const resolvers = {
             timesUsed: times_used,
           };
         } else {
-          throw new Error('URL not found');
+          const { rows: newUrl } = await pool.query(
+            'INSERT INTO url_list(original_url, shortened_url) VALUES($1, $2) RETURNING *',
+            [url, 'the actual logic to shorten']
+          );
+          const {
+            id,
+            original_url,
+            shortened_url,
+            created_at,
+            times_used,
+          }: UrlData = newUrl[0];
+
+          return {
+            id,
+            originalUrl: original_url,
+            shortenedUrl: shortened_url,
+            createdAt: created_at.toISOString(),
+            timesUsed: times_used,
+          };
         }
       } catch (err) {
         console.error('Error fetching URL by Url', err);

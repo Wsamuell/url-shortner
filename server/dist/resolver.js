@@ -33,7 +33,15 @@ const resolvers = {
                     };
                 }
                 else {
-                    throw new Error('URL not found');
+                    const { rows: newUrl } = await db_1.pool.query('INSERT INTO url_list(original_url, shortened_url) VALUES($1, $2) RETURNING *', [url, 'the actual logic to shorten']);
+                    const { id, original_url, shortened_url, created_at, times_used, } = newUrl[0];
+                    return {
+                        id,
+                        originalUrl: original_url,
+                        shortenedUrl: shortened_url,
+                        createdAt: created_at.toISOString(),
+                        timesUsed: times_used,
+                    };
                 }
             }
             catch (err) {

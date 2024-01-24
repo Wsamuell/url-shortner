@@ -9,7 +9,7 @@ const App = () => {
         title="URL. Simplified"
         subtitle="Creating a shortened URL has never been easier."
       />
-      <InputBox placeholder="Enter your URL" />
+      <InputBox placeholder="https://www.wsammy.com/" />
     </div>
   );
 };
