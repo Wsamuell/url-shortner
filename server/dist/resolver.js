@@ -5,14 +5,13 @@ const resolvers = {
     Query: {
         getAllUrls: async () => {
             try {
-                const urls = await db_1.pool.query('SELECT * FROM url_list');
-                console.log(urls.rows);
-                return urls.rows.map((url) => ({
-                    id: url.id,
-                    originalUrl: url.original_url,
-                    shortenedUrl: url.shortened_url,
-                    createdAt: url.created_at.toISOString(),
-                    timesUsed: url.times_used,
+                const { rows: urls } = await db_1.pool.query('SELECT * FROM url_list');
+                return urls.map(({ id, original_url, shortened_url, created_at, times_used, }) => ({
+                    id,
+                    originalUrl: original_url,
+                    shortenedUrl: shortened_url,
+                    createdAt: created_at.toISOString(),
+                    timesUsed: times_used,
                 }));
             }
             catch (err) {
@@ -22,15 +21,15 @@ const resolvers = {
         },
         getUrlByUrl: async (_, { url }) => {
             try {
-                const urls = await db_1.pool.query('SELECT * FROM url_list WHERE original_url = $1', [url]);
-                if (urls.rows.length === 1) {
-                    const url = urls.rows[0];
+                const { rows: urls } = await db_1.pool.query('SELECT * FROM url_list WHERE original_url = $1', [url]);
+                if (urls.length === 1) {
+                    const { id, original_url, shortened_url, created_at, times_used, } = urls[0];
                     return {
-                        id: url.id,
-                        originalUrl: url.original_url,
-                        shortenedUrl: url.shortened_url,
-                        createdAt: url.created_at.toISOString(),
-                        timesUsed: url.times_used,
+                        id,
+                        originalUrl: original_url,
+                        shortenedUrl: shortened_url,
+                        createdAt: created_at.toISOString(),
+                        timesUsed: times_used,
                     };
                 }
                 else {

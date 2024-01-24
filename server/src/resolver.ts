@@ -1,26 +1,28 @@
 import { pool } from './db';
+import { Pool, QueryResult } from 'pg';
 
-type UrlData = {
-  id: number;
-  original_url: string;
-  shortened_url: string;
-  created_at: Date;
-  times_used: number;
-};
+type UrlData = QueryResult['rows'][0];
 
 const resolvers = {
   Query: {
     getAllUrls: async () => {
       try {
-        const urls = await pool.query('SELECT * FROM url_list');
-        console.log(urls.rows);
-        return urls.rows.map((url: UrlData) => ({
-          id: url.id,
-          originalUrl: url.original_url,
-          shortenedUrl: url.shortened_url,
-          createdAt: url.created_at.toISOString(),
-          timesUsed: url.times_used,
-        }));
+        const { rows: urls } = await pool.query('SELECT * FROM url_list');
+        return urls.map(
+          ({
+            id,
+            original_url,
+            shortened_url,
+            created_at,
+            times_used,
+          }: UrlData) => ({
+            id,
+            originalUrl: original_url,
+            shortenedUrl: shortened_url,
+            createdAt: created_at.toISOString(),
+            timesUsed: times_used,
+          })
+        );
       } catch (err) {
         console.error('Error fetching All URLs', err);
         throw new Error('Unable to fetch all URLs');
@@ -29,19 +31,26 @@ const resolvers = {
 
     getUrlByUrl: async (_: any, { url }: { url: string }) => {
       try {
-        const urls = await pool.query(
+        const { rows: urls } = await pool.query(
           'SELECT * FROM url_list WHERE original_url = $1',
           [url]
         );
 
-        if (urls.rows.length === 1) {
-          const url: UrlData = urls.rows[0];
+        if (urls.length === 1) {
+          const {
+            id,
+            original_url,
+            shortened_url,
+            created_at,
+            times_used,
+          }: UrlData = urls[0];
+
           return {
-            id: url.id,
-            originalUrl: url.original_url,
-            shortenedUrl: url.shortened_url,
-            createdAt: url.created_at.toISOString(),
-            timesUsed: url.times_used,
+            id,
+            originalUrl: original_url,
+            shortenedUrl: shortened_url,
+            createdAt: created_at.toISOString(),
+            timesUsed: times_used,
           };
         } else {
           throw new Error('URL not found');
