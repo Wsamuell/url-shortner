@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 
 // im not sure which one is better but not using yhe QueryResult type is proving to be more helpful locally
 
-type UrlData = {
+export type UrlData = {
   id: number;
   original_url: string;
   shortened_url: string;
