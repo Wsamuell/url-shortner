@@ -1,5 +1,6 @@
 import { ApolloServer } from 'apollo-server-express';
 import express, { Application } from 'express';
+import { pool } from './db';
 import typeDefs from './typeDef';
 import resolvers from './resolver';
 
@@ -24,3 +25,24 @@ const startServer = async () => {
 };
 
 startServer();
+
+app.get('/:shortenedUrl', async (req, res) => {
+  const { shortenedUrl } = req.params;
+
+  try {
+    const { rows } = await pool.query(
+      'SELECT original_url FROM url_list WHERE shortened_url = $1',
+      [shortenedUrl]
+    );
+
+    if (rows.length === 1) {
+      const originalUrl = rows[0].original_url;
+      res.redirect(originalUrl);
+    } else {
+      res.status(404).send('Short URL not found');
+    }
+  } catch (err) {
+    console.error('Error fetching URL by shortened URL', err);
+    res.status(500).send('Internal Server Error');
+  }
+});

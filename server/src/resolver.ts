@@ -1,9 +1,10 @@
 import { pool } from './db';
-import { Pool, QueryResult } from 'pg';
+import { nanoid } from 'nanoid';
+
+// type UrlData = QueryResult['rows'][0];
 
 // im not sure which one is better but not using yhe QueryResult type is proving to be more helpful locally
 
-// type UrlData = QueryResult['rows'][0];
 type UrlData = {
   id: number;
   original_url: string;
@@ -62,9 +63,10 @@ const resolvers = {
             timesUsed: times_used,
           };
         } else {
+          const shortId: string = nanoid(7);
           const { rows: newUrl } = await pool.query(
             'INSERT INTO url_list(original_url, shortened_url) VALUES($1, $2) RETURNING *',
-            [url, 'the actual logic to shorten']
+            [url, shortId]
           );
           const {
             id,

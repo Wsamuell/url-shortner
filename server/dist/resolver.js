@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("./db");
+const nanoid_1 = require("nanoid");
 const resolvers = {
     Query: {
         getAllUrls: async () => {
@@ -33,7 +34,8 @@ const resolvers = {
                     };
                 }
                 else {
-                    const { rows: newUrl } = await db_1.pool.query('INSERT INTO url_list(original_url, shortened_url) VALUES($1, $2) RETURNING *', [url, 'the actual logic to shorten']);
+                    const shortId = (0, nanoid_1.nanoid)(7);
+                    const { rows: newUrl } = await db_1.pool.query('INSERT INTO url_list(original_url, shortened_url) VALUES($1, $2) RETURNING *', [url, shortId]);
                     const { id, original_url, shortened_url, created_at, times_used, } = newUrl[0];
                     return {
                         id,
