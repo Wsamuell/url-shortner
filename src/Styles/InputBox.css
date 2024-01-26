@@ -1,11 +1,19 @@
-.input-container {
+.inputBox-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
 input {
-  width: 90%;
+  width: 100%;
   padding: 10px;
   border: none;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -24,4 +32,29 @@ input:focus {
   background-color: #bfbec1;
   border-radius: 20px;
   margin-left: -30px;
+}
+.error-message {
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 10px;
+  color: #d30d14;
+}
+
+.shake {
+  animation: shake 0.2s ease-in-out 0s 2;
+  box-shadow: rgba(211, 13, 20, 0.2) 0px 2px 8px 0px;
+}
+
+@keyframes shake {
+  0% {
+    margin-left: 0rem;
+  }
+  25% {
+    margin-left: 0.5rem;
+  }
+  75% {
+    margin-left: -0.5rem;
+  }
+  100% {
+    margin-left: 0rem;
+  }
 }

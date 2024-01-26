@@ -1,8 +1,9 @@
 import { FaArrowRight } from 'react-icons/fa6';
 import '../Styles/InputBox.css';
 import Toast from './Toast';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
+import Spacer from './Spacer';
 
 interface InputBoxProps {
   placeholder: string;
@@ -22,22 +23,41 @@ const FETCH_OR_CREATE_SHORT_URL = gql`
   }
 `;
 
+const isValidUrl = (url: string): boolean => {
+  // Regular expression for a valid URL
+  const urlRegex =
+    /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+
+  return urlRegex.test(url);
+};
+
 const InputBox = ({ placeholder }: InputBoxProps) => {
   const [showToast, setShowToast] = useState<boolean>(false);
   const [value, setValue] = useState('');
   const [toastMessage, setToastMessage] = useState('');
+  const [validateError, setValidateError] = useState('');
   const { loading, error, data, refetch } = useQuery<ShortUrlData>(
     FETCH_OR_CREATE_SHORT_URL,
     {
       variables: { getUrlByUrl: value },
     }
   );
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+    const inputValue = event.target.value.trim();
+    setValue(inputValue);
+    setValidateError('');
   };
   const handleSubmitFetch = async () => {
     try {
+      setValidateError('');
+      if (!isValidUrl(value)) {
+        setValidateError('Not a valid URL');
+        inputRef.current?.focus();
+        return;
+      }
+
       await refetch();
       if (loading) return console.log('Loading...');
       if (error) return `Error! ${error.message}`;
@@ -61,14 +81,23 @@ const InputBox = ({ placeholder }: InputBoxProps) => {
   };
 
   return (
-    <div className="input-container">
-      <input
-        type="text"
-        placeholder={placeholder}
-        onChange={(event) => handleValue(event)}
-      />
-      <FaArrowRight className="submit-arrow" onClick={handleSubmitFetch} />
-      {showToast && <Toast message={toastMessage} />}
+    <div>
+      <div className="input-container">
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder={placeholder}
+          onChange={(event) => handleValue(event)}
+          style={{
+            border: validateError && '1px solid #d30d14',
+          }}
+          className={validateError && 'shake'}
+        />
+        <FaArrowRight className="submit-arrow" onClick={handleSubmitFetch} />
+        {showToast && <Toast message={toastMessage} />}
+      </div>
+      <Spacer height={3} width={0} />
+      {validateError && <div className="error-message">{validateError}</div>}
     </div>
   );
 };

@@ -12,7 +12,7 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <Header
-        title="URL. Simplified"
+        title="URL. Simplifyed"
         subtitle="Creating a shortened URL has never been easier."
       />
       <InputBox placeholder="https://www.wsammy.com/" />
