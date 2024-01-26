@@ -5,6 +5,7 @@
   flex-direction: column;
   padding: 15px;
   margin-bottom: 17px;
+  text-align: center;
 }
 .title {
   font-family: 'Poppins', sans-serif;

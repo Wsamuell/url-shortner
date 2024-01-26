@@ -32,9 +32,9 @@ const isValidUrl = (url: string): boolean => {
 };
 
 const InputBox = ({ placeholder }: InputBoxProps) => {
-  const [showToast, setShowToast] = useState<boolean>(true);
+  const [showToast, setShowToast] = useState<boolean>(false);
   const [value, setValue] = useState('');
-  const [toastMessage, setToastMessage] = useState('localhost:3000/zSiIZPM');
+  const [toastMessage, setToastMessage] = useState('');
   const [validateError, setValidateError] = useState('');
   const { loading, error, data, refetch } = useQuery<ShortUrlData>(
     FETCH_OR_CREATE_SHORT_URL,
@@ -97,16 +97,17 @@ const InputBox = ({ placeholder }: InputBoxProps) => {
           className={validateError && 'shake'}
         />
         <FaArrowRight className="submit-arrow" onClick={handleSubmitFetch} />
-        {showToast && (
-          <Toast
-            message={toastMessage}
-            messageTitle="Simplifyed!"
-            closeToast={handleClose}
-          />
-        )}
       </div>
       <Spacer height={3} width={0} />
       {validateError && <div className="error-message">{validateError}</div>}
+      <Spacer height={30} width={0} />
+      {showToast && (
+        <Toast
+          message={toastMessage}
+          messageTitle="Simplifyed!"
+          closeToast={handleClose}
+        />
+      )}
     </div>
   );
 };
