@@ -1,6 +1,6 @@
 .toast {
   position: fixed;
-  bottom: 30;
+  bottom: 200px;
   background-color: #edf9f8;
   opacity: 0.8;
   color: #1c1d21;
@@ -10,6 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: fadeInFromBottom 1.3s ease-in-out;
 }
 .toast-copy {
   width: 15px;
@@ -60,4 +61,15 @@
   border-radius: 5px;
   background-color: #ffffff;
   cursor: pointer;
+}
+
+@keyframes fadeInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(200%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

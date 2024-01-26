@@ -11,11 +11,13 @@ const client = new ApolloClient({
 const App = () => {
   return (
     <ApolloProvider client={client}>
-      <Header
-        title="URL. Simplifyed"
-        subtitle="Creating a shortened URL has never been easier."
-      />
-      <InputBox placeholder="https://www.wsammy.com/" />
+      <div className="fade-in">
+        <Header
+          title="URL. Simplifyed"
+          subtitle="Creating a shortened URL has never been easier."
+        />
+        <InputBox placeholder="https://www.wsammy.com/" />
+      </div>
     </ApolloProvider>
   );
 };

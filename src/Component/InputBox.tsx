@@ -48,6 +48,7 @@ const InputBox = ({ placeholder }: InputBoxProps) => {
     const inputValue = event.target.value.trim();
     setValue(inputValue);
     setValidateError('');
+    setShowToast(false);
   };
   const handleClose = () => {
     setShowToast(false);
