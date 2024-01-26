@@ -3,12 +3,63 @@
   bottom: 180px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #26a699;
+  background-color: #edf9f8;
   opacity: 0.8;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
+  color: #1c1d21;
+  padding: 8px;
+  border: 1px solid #73cd77;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.toast-copy {
+  width: 15px;
+  height: auto;
+  padding: 10px;
+  background-color: #73cd77;
+  border-radius: 30px;
+  transition: 0.5s ease-in-out;
+}
+.toast-copied {
+  width: 15px;
+  height: auto;
+  padding: 10px;
+  background-color: #73cd77;
+  border-radius: 30px;
+}
+
+.toast-copy:hover {
+  background-color: lime;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.toast-message {
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-self: unset;
+  justify-content: center;
+}
+.message-title {
+  font-weight: 800;
+}
+.message-url:hover {
+  cursor: pointer;
+  transition: 0.5s ease-in-out;
+  text-decoration: underline;
+}
+
+.close-toast {
+  width: 15px;
+  height: auto;
+  padding: 3px;
+}
+
+.close-toast:hover {
+  border-radius: 5px;
+  background-color: #ffffff;
+  cursor: pointer;
 }

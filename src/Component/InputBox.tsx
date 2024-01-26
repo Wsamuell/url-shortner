@@ -32,9 +32,9 @@ const isValidUrl = (url: string): boolean => {
 };
 
 const InputBox = ({ placeholder }: InputBoxProps) => {
-  const [showToast, setShowToast] = useState<boolean>(false);
+  const [showToast, setShowToast] = useState<boolean>(true);
   const [value, setValue] = useState('');
-  const [toastMessage, setToastMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState('localhost:3000/zSiIZPM');
   const [validateError, setValidateError] = useState('');
   const { loading, error, data, refetch } = useQuery<ShortUrlData>(
     FETCH_OR_CREATE_SHORT_URL,
@@ -48,6 +48,9 @@ const InputBox = ({ placeholder }: InputBoxProps) => {
     const inputValue = event.target.value.trim();
     setValue(inputValue);
     setValidateError('');
+  };
+  const handleClose = () => {
+    setShowToast(false);
   };
   const handleSubmitFetch = async () => {
     try {
@@ -81,7 +84,7 @@ const InputBox = ({ placeholder }: InputBoxProps) => {
   };
 
   return (
-    <div>
+    <div className="inputBox-container">
       <div className="input-container">
         <input
           ref={inputRef}
@@ -94,7 +97,13 @@ const InputBox = ({ placeholder }: InputBoxProps) => {
           className={validateError && 'shake'}
         />
         <FaArrowRight className="submit-arrow" onClick={handleSubmitFetch} />
-        {showToast && <Toast message={toastMessage} />}
+        {showToast && (
+          <Toast
+            message={toastMessage}
+            messageTitle="Simplifyed!"
+            closeToast={handleClose}
+          />
+        )}
       </div>
       <Spacer height={3} width={0} />
       {validateError && <div className="error-message">{validateError}</div>}
