@@ -1,29 +1,14 @@
 import { Pool } from 'pg';
+require('dotenv').config();
 
-// const {
-//   DB: dbstring = '',
-//   DB_PASSWORD: dbPassword = '',
-//   DB_PORT: port = '3000',
-// } = process.env;
-
-// if (!dbstring || !dbPassword) {
-//   console.error('Missing required environment variables.');
-//   process.exit(1);
-// }
+const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = process.env;
 
 const pool = new Pool({
-  host: 'localhost',
-  port: 5432,
-  database: 'url_shortner_db',
-  user: 'samuelwemimo',
-  password: '',
+  host: DB_HOST,
+  port: parseInt(DB_PORT!),
+  database: DB_NAME,
+  user: DB_USER,
+  password: DB_PASSWORD,
 });
-// const pool = new Pool({
-//   host: process.env.DB_HOST || 'localhost',
-//   port: Number(process.env.DB_PORT) || 5432,
-//   database: process.env.DB_NAME || 'url_shortner_db',
-//   user: process.env.DB_USER || 'samuelwemimo',
-//   password: process.env.DB_PASSWORD || '',
-// });
 
 export { pool };

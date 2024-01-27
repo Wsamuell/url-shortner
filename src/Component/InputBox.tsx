@@ -25,6 +25,7 @@ const FETCH_OR_CREATE_SHORT_URL = gql`
 
 const isValidUrl = (url: string): boolean => {
   // Regular expression for a valid URL
+  // works as expected but since i didnt write it it kinda freaks me out a bit
   const urlRegex =
     /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
 
