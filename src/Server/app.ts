@@ -18,9 +18,7 @@ const startServer = async () => {
   server.applyMiddleware({ app, path: '/graphql' });
 
   app.listen(PORT as number, () => {
-    console.log(
-      `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
-    );
+    console.log(`Server ready at ${PORT}`);
   });
 };
 

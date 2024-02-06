@@ -41,8 +41,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "compile": "tsc && ts-node ./src/Server/app.ts",
-    "dev": "./node_modules/nodemon/bin/nodemon.js -e ts  --exec \"npm run compile\"",
-    "compile-and-start": "npm run compile && node ./dist/Server/.js"
+    "dev": "./node_modules/nodemon/bin/nodemon.js -e ts  --exec \"npm run compile\""
   },
   "eslintConfig": {
     "extends": [
