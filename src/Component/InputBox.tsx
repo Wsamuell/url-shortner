@@ -69,7 +69,7 @@ const InputBox = ({ placeholder }: InputBoxProps) => {
       const shortenedUrl = data?.getUrlByUrl?.shortenedUrl;
 
       if (shortenedUrl) {
-        setToastMessage(`localhost:3000/${shortenedUrl}`);
+        setToastMessage(`${process.env.SERVER}/${shortenedUrl}`);
         setShowToast(true);
         setTimeout(() => {
           setShowToast(false);
